@@ -1,45 +1,52 @@
- #include <stdio.h>
- int main() {
- int frames, pages, pageFaults = 0, current = 0;
- printf("Enter the number of frames: ");
- scanf("%d", &frames);
- printf("Enter the number of pages: ");
- scanf("%d", &pages);
- int pageString[pages];
- printf("Enter the page reference string: ");
- for(int i = 0; i < pages; i++) {
- scanf("%d", &pageString[i]);
- }
- int frame[frames];
- for(int i = 0; i < frames; i++) {
- frame[i] =-1; // initialize frames as empty
- }
- printf("\nPage Replacement Process:\n");
-for(int i = 0; i < pages; i++) {
- int found = 0;
- // Check if page is already in the frame
- for(int j = 0; j < frames; j++) {
- if(frame[j] == pageString[i]) {
- found = 1;
- break;
- }}
- // If page is not found in the frame, replace it using FIFO
- if(!found) {
- frame[current] = pageString[i];
- current = (current + 1) % frames;
- pageFaults++;
- // Display frames after each page replacement
- printf("Page %d: ", pageString[i]);
- for(int j = 0; j < frames; j++) {
- if(frame[j] !=-1) {
- printf("%d ", frame[j]);
- } else {
- printf("- ");
- } }
- printf("\n");
- } else {
- printf("Page %d: No page fault\n", pageString[i]);
- }}
- printf("\nTotal Page Faults: %d\n", pageFaults);
- return 0;
- }
+#include<stdio.h>
+int main(){
+    int i,j,frames,pages,pageFaults=0,current=0;
+    printf("Enter the no. of Frames: ");
+    scanf("%d",&frames);
+    printf("Enter the no. of Pages: ");
+    scanf("%d",&pages);
+    printf("Enter the reference string to pages: ");
+    int pageString[pages];
+    for(i=0;i<pages;i++){
+        scanf("%d",&pageString[i]);
+    }
+    
+    int frame[frames];
+    for(i=0;i<frames;i++){
+        frame[i] = -1;
+    }
+    
+    for(i=0;i<pages;i++){
+        int found = 0;
+        for(j=0;j<frames;j++){
+            if(frame[j] == pageString[i]){
+                found = 1;
+                break;
+            }
+        }
+        
+        if(!found){
+            frame[current] = pageString[i];
+            current = (current+1)%frames;
+            pageFaults++;
+            
+            printf("Page %d: ", pageString[i]);
+            
+            for(j=0;j<frames;j++){
+                if(frame[j] != -1){
+                   printf("%d ",frame[j]);
+                }
+                else{
+                    printf("-");
+                }
+            }
+            printf("\n");
+        }
+        else{
+            printf("Page %d: No page Fault \n", pageString[i]);
+        
+        }
+    }
+    printf("Total page faults: %d",pageFaults);
+    return 0;
+}

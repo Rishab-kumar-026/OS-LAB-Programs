@@ -1,59 +1,55 @@
-#include <stdio.h>
+#include<stdio.h>
+#include<stdlib.h>
 int i;
-int findWaitingTime(int processes[], int n, int burstTime[], int waitingTime[])
-{
-    waitingTime[0] = 0;
-    for (i = 1; i < n; i++)
-    {
-        waitingTime[i] = waitingTime[i - 1] + burstTime[i - 1];
+
+void findWT(int n , int wt[],int brustTime[]){
+    wt[0] = 0;
+    for(i=1;i<n;i++){
+        wt[i] = wt[i-1] + brustTime[i-1];
     }
 }
 
-int findTurnAroundTime(int processes[], int n, int burstTime[], int waitingTime[], int turnAroundTime[])
-{
-    for (i = 0; i < n; i++)
-    {
-        turnAroundTime[i] = waitingTime[i] + burstTime[i];
+void findTT(int n , int wt[],int brustTime[],int tt[]){
+    for(i=0;i<n;i++){
+        tt[i] = wt[i] + brustTime[i];
     }
 }
 
-int findAverageTime(int processes[], int n, int burstTime[])
-{
-    int waitingTime[n], turnAroundTime[n], totalWaitingTime = 0, totalTurnAroundTime = 0;
 
-    findWaitingTime(processes, n, burstTime, waitingTime);
-    findTurnAroundTime(processes, n, burstTime, waitingTime, turnAroundTime);
+void findAvgTime(int processes[],int n,int brustTime[]){
+    int wt[n] , tt[n], twt = 0 , ttt = 0;
 
-    printf("Processes \t WaitingTime \t BurstTime \t TurnAroundTime");
-    printf("\n");
-    for (i = 0; i < n; i++)
-    {
-        totalWaitingTime = totalWaitingTime + waitingTime[i];
-        totalTurnAroundTime = totalTurnAroundTime + turnAroundTime[i];
+    findWT(n,wt,brustTime);
+    findTT(n,wt,brustTime,tt);
 
-        printf("%d \t %d \t %d \t %d", processes[i], waitingTime[i], burstTime[i], turnAroundTime[i]);
-        printf("\n");
+    printf("First Come First Scheduling \n");
+    printf("Process \t Burst Time \t Waiting Time \t TurnAround Time \n");
+    for(i=0;i<n;i++){
+        printf("%d \t\t\t\t %d \t\t\t\t %d \t\t\t\t %d \n", i+1,brustTime[i],wt[i],tt[i]);
     }
-    printf("\n");
-    printf("Average Waiting Time: %.2f", (float)totalWaitingTime / n);
-    printf("\n Average TurnAround Time: %.2f", (float)totalTurnAroundTime / n);
+    for(i=0;i<n;i++){
+        twt = twt + wt[i];
+        ttt = ttt + tt[i];
+    }
+   printf("\n");
+    printf("Average waiting time : %.2f \n",(float)twt/n);
+    printf("Average turnaround time : %.2f \n",(float)ttt/n);
 }
 
-int main()
-{
+
+
+
+int main(){
     int n;
-    printf("Enter the number of Process: ");
-    scanf("%d", &n);
-
-    int processes[n], burstTime[n];
-
-    for (i = 0; i < n; i++)
-    {
-        processes[i] = i + 1;
-        printf("Enter the Burst Time for Process %d : ", i + 1);
-        scanf("%d", &burstTime[i]);
+    printf("Enter the number of Processes: ");
+    scanf("%d",&n);
+    int processes[n],burstTime[n];
+    
+    for(i=0;i<n;i++){
+     printf("Enter the burst time for process %d: ",i+1);
+     scanf("%d",&burstTime[i]);
     }
 
-    findAverageTime(processes, n, burstTime);
+    findAvgTime(processes,n,burstTime);
     return 0;
 }
